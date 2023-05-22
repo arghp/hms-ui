@@ -1,1 +1,1 @@
-# hms-ui
+# Hotel Check-In/Check-Out Management System

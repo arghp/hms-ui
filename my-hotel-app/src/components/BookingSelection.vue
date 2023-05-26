@@ -1,65 +1,42 @@
 <template>
-  <v-container>
+  <v-container justify="space-around">
     <v-row>
-      Number of adult guests:
-      <v-text-field
-        v-model="booking.adults"
-        type="number"
-        style="width: 80px"
-        density="compact"
-        hide-details
-        variant="outlined"
-      ></v-text-field>
-
-      Number of children guests:
-      <v-text-field
-        v-model="booking.children"
-        type="number"
-        style="width: 80px"
-        density="compact"
-        hide-details
-        variant="outlined"
-      ></v-text-field>
-
-      Number of rooms:
-      <v-text-field
-        v-model="booking.rooms"
-        type="number"
-        style="width: 80px"
-        density="compact"
-        hide-details
-        variant="outlined"
-      ></v-text-field>
-
+      <v-col cols='2' class="d-flex align-center">Number of guests: &nbsp;</v-col>
+      <v-col >
+        <v-text-field
+          v-model="booking.guests"
+          type="number"
+          density="compact"
+          style="width:80px"
+          hide-details
+          variant="outlined"
+        ></v-text-field>
+      </v-col>
 
     </v-row>
-
-    <v-spacer></v-spacer>
-
-    <br>
-    Dates of stay:
     <br>
     <br>
-    <v-row
-      justify="space-around"
-    >
-      <v-text-field
-        v-model="booking.start"
-        label="Check-in date"
-        type="date"
-      ></v-text-field>
+    <v-row justify="space-around">
+      <v-col cols='2' class="d-flex align-center">Dates of stay: &nbsp;</v-col>
+      <v-col>
+        <v-text-field
+          v-model="booking.start"
+          label="Check-in date"
+          type="date"
+        ></v-text-field>
+      </v-col>
 
-      <br>
-
-      <v-text-field
-        v-model="booking.end"
-        label="Check-out date"
-        type="date"
-      ></v-text-field>
-
+<!--      <v-spacer></v-spacer>-->
+      <v-col>
+        <v-text-field
+          v-model="booking.end"
+          label="Check-out date"
+          type="date"
+        ></v-text-field>
+        </v-col>
     </v-row>
 
-    Additional Options:
+    <br> Additional Options: <br>
     <v-checkbox
       v-model="booking.easyAccess"
       label="Easy Access"
@@ -68,7 +45,7 @@
       hide-details
     ></v-checkbox>
 
-    <v-spacer></v-spacer>
+    <br>
 
     <v-btn color="primary">
       Search available rooms
@@ -85,12 +62,10 @@ export default {
     booking: {
       start: null,
       end: null,
-      adults: null,
-      children: null,
+      guests: null,
       rooms: null,
       easyAccess: null,
     },
-    locations: ['Australia', 'Barbados', 'Chile', 'Denmark', 'Ecuador', 'France'],
   }),
 }
 </script>

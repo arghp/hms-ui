@@ -35,3 +35,19 @@ export default createVuetify({
     ...labsComponents,
   },
 })
+
+
+/*
+
+  * Color Theme Swatches in Hex *
+  https://www.canva.com/colors/color-palettes/northern-lights-3/
+Neon Green #1DC690 -- using next green #5CA277
+Blue Grotto #278AB0 --text light
+Blue #1C4670  -- background
+Ivory #EAEAE0
+
+https://www.canva.com/colors/color-palettes/retro-building-level/
+  Amber #E4A527
+*/
+
+

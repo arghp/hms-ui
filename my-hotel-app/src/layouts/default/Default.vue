@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :style="{background: '#1C4670'}">
     <default-bar />
 
     <default-view />

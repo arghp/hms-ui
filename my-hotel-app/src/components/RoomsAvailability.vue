@@ -1,14 +1,19 @@
 <template>
-  <v-container>
-    <h1>Room Availability</h1>
+
+  <v-container class="section-container" >
+    <h1 class="section-header">Room Availability</h1>
     <br>
     <v-data-table
       v-model:items-per-page="itemsPerPage"
       :headers="headers"
       :items="rooms"
-      class="elevation-1"
+      :key="rooms.id"
+      :item-value="rooms.numRooms"
+      elevation="1"
       rounded
     >
+
+
         <template v-slot:item.numRooms="{ item }">
           <v-text-field
             v-model="item.columns.numRooms"
@@ -17,12 +22,24 @@
             style="width:80px"
             hide-details
             variant="outlined"
+            min="0"
+            :max="item.columns.availableRooms"
+            @input="roomsRequested(item)"
           ></v-text-field>
         </template>
 
       </v-data-table>
 
+    <br><br>
+
+    <v-row justify="end">
+      <v-btn class="section-btn" @click="reserveRooms">
+        Reserve rooms
+      </v-btn>
+    </v-row>
+
   </v-container>
+
 </template>
 
 <script>
@@ -44,6 +61,7 @@ export default {
         { title: 'Available rooms', key: 'availableRooms', align: 'center', sortable: false },
         { title: 'Number of rooms', key: 'numRooms', align: 'right', sortable: false },
       ],
+      requestedRooms: {},
       rooms: [
         {
           id: 1,
@@ -85,15 +103,23 @@ export default {
     };
   },
   methods: {
-    searchRooms(){
-      // Perform search logic based on the provided data
-      console.log('Number of Rooms:', this.numberRooms);
-      console.log('Check-in Date:', this.checkInDate);
-      console.log('Check-out Date:', this.checkOutDate);
-      console.log('Accessibility Accommodations:', this.accessibility);
-    }
+    reserveRooms(){
+      const room = JSON.parse(JSON.stringify(this.requestedRooms))
+      console.log('this.requestedRooms', room);
 
-    //add api call and data return
+    // todo: add logic for API call, we need to send a combination of IDs and numRooms
+
+
+      this.$emit('reserveRooms', true);
+    },
+
+    roomsRequested(item){
+      console.log('item ', item)
+      const room = JSON.parse(JSON.stringify(item))
+      this.requestedRooms[room.raw.id]=room.columns.numRooms
+
+    },
+
   }
   };
 </script>

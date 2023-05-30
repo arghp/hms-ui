@@ -1,59 +1,44 @@
 <template>
-  <v-container>
-    <v-card width="70%">
-      <v-card-title> Contact Information </v-card-title>
-      <v-form v-model="valid">
-        <v-text-field
-          v-model="firstname"
-          :rules="nameRules"
-          :counter="10"
-          label="First name"
-          required
-        ></v-text-field>
+  <v-container class="section-container">
+    <v-row>
+      <v-col cols="6"><h1 class="section-header"> Personal Information </h1></v-col>
 
-        <v-text-field
-          v-model="lastname"
-          :rules="nameRules"
-          :counter="10"
-          label="Last name"
-          required
-        ></v-text-field>
+    </v-row>
 
-        <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          label="E-mail"
-          required
-        ></v-text-field>
+    <v-row>
+      <v-col cols="3">
 
-        <v-text-field
-          v-model="phone"
-          :counter="7"
-          label="Phone Number"
-          required
-        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <GuestInformation></GuestInformation>
+      </v-col>
 
-      </v-form>
 
-      <div>
-        <v-date-picker
-          v-model="date"
-          :allowed-dates="allowedDates"
-          class="mt-3"
-          min="2016-06-15"
-          max="2018-03-20"
-        ></v-date-picker>
-      </div>
-    </v-card>
+    </v-row>
+
   </v-container>
 
 
 </template>
 
 <script>
+
+  import GuestInformation from "@/components/GuestInformation.vue";
+
+
+
 export default {
+  components: {
+    GuestInformation
+  },
   data: () => ({
     date: '2018-03-02',
+    contactGuest: null,
+    stateAbv:['CA', 'PA', 'NY'],
+    state: '',
+    city: '',
+    zipCode: '',
+    adress: '',
     valid: false,
     firstname: '',
     lastname: '',
@@ -90,3 +75,17 @@ export default {
   }
 }
 </script>
+
+
+<style>
+.info-card{
+  border-radius: 12px;
+
+}
+.info-title{
+  border-bottom: 4px solid #5CA277;
+  color: #5CA277;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+</style>

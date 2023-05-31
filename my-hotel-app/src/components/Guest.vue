@@ -7,7 +7,7 @@
 
     <v-row>
       <v-col cols="3" >
-        <ul style="margin: 4em; margin-top: 10em;">
+        <ul style="margin: 10em 4em 4em;">
           <li style="margin-top: 2em; color: #5CA277;"><h3>1. Personal Information</h3></li>
           <li style="margin-top: 2em; color: #5CA277;"><h3>2. Billing Information</h3></li>
           <li style="margin-top: 2em; color: #5CA277;"><h3>3. Review & Confirm</h3></li>
@@ -17,11 +17,7 @@
         <PersonalInformation ref="personalInfoRef"></PersonalInformation>
       </v-col>
 
-      <v-col align-self="end">
-      <v-btn
-        class="section-btn"
-        @click="nextStep">Next</v-btn>
-      </v-col>
+
     </v-row>
 
   </v-container>
@@ -46,9 +42,7 @@ export default {
   }),
 
   methods: {
-    nextStep(){
 
-    },
 
   }
 }

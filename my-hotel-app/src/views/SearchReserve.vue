@@ -1,10 +1,10 @@
-<template>
+<template >
 
-  <BookingSelection  @viewRooms="showRooms"> </BookingSelection>
+  <BookingSelection @viewRooms="showRooms"> </BookingSelection>
   <br>
   <RoomsAvailability v-if="roomAvailability" @reserveRooms="showContactInfo"> </RoomsAvailability>
   <br>
-  <ContactInformation v-if="contactInfo" > </ContactInformation>
+  <PersonalInformation v-if="contactInfo" > </PersonalInformation>
 
   <br><br>
   <br><br>
@@ -17,13 +17,13 @@
 <script>
   import BookingSelection from "@/components/BookingSelection.vue";
   import RoomsAvailability from "@/components/RoomsAvailability.vue";
-  import ContactInformation from "@/components/ContactInformation.vue";
+  import PersonalInformation from "@/components/Personalformation.vue";
 
 
   export default {
     name: 'SearchReserve',
     components: {
-      ContactInformation,
+      PersonalInformation,
       BookingSelection,
       RoomsAvailability,
     },

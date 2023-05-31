@@ -45,16 +45,10 @@
     </v-container >
   </div>
 
-  <BookingSelection/>
-  <RoomsAvailability/>
-  <ContactInformation/>
+
 </template>
 
 <script>
-  import BookingSelection from "@/components/BookingSelection.vue";
-  import RoomsAvailability from "@/components/RoomsAvailability.vue";
-  import ContactInformation from '@/components/ContactInformation.vue';
-
   export default {
     methods: {
 

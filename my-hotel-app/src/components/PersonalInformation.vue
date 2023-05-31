@@ -7,10 +7,12 @@
     >
       <v-card-title class="info-title"
       >
-        Guest
+        Personal Information
 
       </v-card-title>
       <v-form
+        ref="personalForm"
+        @submit.prevent="submitPersonalInfo"
         v-model="valid"
         style="padding: 1em;"
       >
@@ -20,7 +22,7 @@
           </v-col>
           <v-col cols="5">
             <v-text-field
-              v-model="firstname"
+              v-model="firstName"
               :rules="[requiredRule, minNameLengthRule, maxNameLengthRule]"
               :counter="10"
               label="First name"
@@ -30,7 +32,7 @@
 
           <v-col>
             <v-text-field
-              v-model="lastname"
+              v-model="lastName"
               :rules="[requiredRule, minNameLengthRule, maxNameLengthRule]"              :counter="10"
               label="Last name"
               required
@@ -50,6 +52,7 @@
               :counter="7"
               label="Street address"
               required
+              :rules="[requiredRule]"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -64,6 +67,7 @@
               :counter="5"
               label="City"
               required
+              :rules="[requiredRule]"
             ></v-text-field>
           </v-col>
 
@@ -74,7 +78,7 @@
               :counter="7"
               label="State"
               required
-
+              :rules="[requiredRule]"
             ></v-select>
           </v-col>
           <v-col cols="3">
@@ -83,7 +87,7 @@
               :counter="7"
               label="Zip Code"
               required
-
+              :rules="[requiredRule]"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -98,6 +102,7 @@
               :counter="7"
               label="Phone Number"
               required
+              :rules="[requiredRule]"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -109,14 +114,14 @@
           <v-col>
             <v-text-field
               v-model="email"
-              :rules="emailRules"
               label="E-mail"
               required
+              :rules="[requiredRule, emailRules]"
             ></v-text-field>
           </v-col>
         </v-row>
 
-        <v-row>
+<!--        <v-row>
 
           <v-col cols="4" style="align-content: center;">
             Is this guest the primary contact?
@@ -127,6 +132,7 @@
               v-model="contactGuest"
               inline
               required
+              :rules="[requiredRule]"
               hide-details
             >
               <v-radio
@@ -142,8 +148,21 @@
             </v-radio-group>
           </v-col>
 
-        </v-row>
+        </v-row>-->
+        <v-row
+          justify="end"
+          style="padding: 1em;"
+        >
+            <v-btn
+              :disabled="!isFormValid"
+              type="submit"
+              class="section-btn"
+            >
+              Submit
+            </v-btn>
 
+
+        </v-row>
       </v-form>
 
 
@@ -164,38 +183,69 @@ export default {
     zipCode: '',
     address: '',
     valid: false,
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
     requiredRule: (v) => !!v || 'Field is required.',
     minNameLengthRule: (v) => (v?.length > 1) || 'Name must have at least one characters.',
     maxNameLengthRule: (v) => (v?.length <= 10) || 'Name must be less than 10 characters.',
-    nameRules: [
-      value => {
-        if (value) return true
-
-        return 'Name is requred.'
-      },
-      value => {
-        if (value?.length <= 10) return true
-
-        return 'Name must be less than 10 characters.'
-      },
-    ],
     email: '',
-    emailRules: [
-      value => {
-        if (value) return true
-
-        return 'E-mail is requred.'
-      },
-      value => {
-        if (/.+@.+\..+/.test(value)) return true
-
-        return 'E-mail must be valid.'
-      },
-    ],
+    emailRules: (v) => (/.+@.+\..+/.test(v)) || 'E-mail must be valid.',
     phone: '',
+    formValid: false,
   }),
+  watch: {
+    // Watch for changes in the form fields and validate the form
+    field1: 'validateForm',
+    field2: 'validateForm',
+    firstName: 'validateForm',
+    lastName: 'validateForm',
+    address: 'validateForm',
+    city: 'validateForm',
+    state: 'validateForm',
+    phone: 'validateForm',
+    email: 'validateForm',
+  },
+  computed: {
+    isFormValid(){
+      return this.formValid;
+    }
+  },
+  methods: {
+    async validateForm() {
+      if (this.$refs.personalForm) {
+        try {
+          await this.$refs.personalForm.validate();
+          const formValidation = JSON.parse(JSON.stringify(this.$refs.personalForm))
+          this.formValid = formValidation.isValid;
+          }
+          catch (error) {
+            console.log('error', error)
+            this.formValid = false;
+        }
+      } else {
+        this.formValid = false;
+      }
+    },
+    submitPersonalInfo() {
+
+      console.log("Personal Info submitted")
+    },
+    getPersonalInfo(){
+      const guest = {}
+      guest['firstName'] = this.firstName;
+      guest['lastName'] = this.lastName;
+      guest['address'] = this.address;
+      guest['city'] = this.city;
+      guest['state'] = this.state;
+      guest['phone'] = this.phone;
+      guest['email'] = this.email;
+
+      const allValuesNonEmpty = Object.values(guest).every(value => value !== '');
+
+      return allValuesNonEmpty ? guest : {}
+    }
+  },
+
 }
 
 </script>

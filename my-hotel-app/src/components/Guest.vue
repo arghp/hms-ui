@@ -14,7 +14,17 @@
         </ul>
       </v-col>
       <v-col cols="6">
-        <PersonalInformation ref="personalInfoRef"></PersonalInformation>
+        <PersonalInformation
+          v-if="showPersonalCard"
+          @getPersonalInfo="getPersonalInformation"
+        >
+
+        </PersonalInformation>
+        <BillingInofrmation
+          v-if="showBillingCard"
+          @getBillingInfo="getBillingInformation"
+        >
+        </BillingInofrmation>
       </v-col>
 
 
@@ -28,21 +38,42 @@
 <script>
 
   import PersonalInformation from "@/components/PersonalInformation.vue";
+  import BillingInofrmation from "@/components/BillingInofrmation.vue";
 
 
 
 export default {
   components: {
-    PersonalInformation
+    PersonalInformation,
+    BillingInofrmation
   },
   data: () => ({
     date: '2018-03-02',
     contactGuest: null,
-    btnDisabled: false,
+    showPersonalCard: true,
+    showBillingCard: false,
+    showReviewCard: false,
+    personalInfo: false,
+    billingInfo: false,
+    reviewInfo: false,
+    guest: {},
   }),
 
   methods: {
+    getPersonalInformation(guest){
+      this.guest = guest;
+      this.personalInfo = true;
+      this.showPersonalCard = false;
+      this.showBillingCard = true;
+    },
 
+    getBillingInformation(card){
+      this.card = card;
+      this.billingInfo = true;
+      this.showBillingCard = false;
+      this.showReviewCard = true;
+      console.log('showBillingCard', this.showBillingCard)
+    }
 
   }
 }

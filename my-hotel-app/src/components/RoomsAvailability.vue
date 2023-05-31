@@ -108,6 +108,7 @@ export default {
       console.log('this.requestedRooms', room);
 
     // todo: add logic for API call, we need to send a combination of IDs and numRooms
+      // need to check if at least one room was reserved before going to the "Guest" component
 
 
       this.$emit('reserveRooms', true);

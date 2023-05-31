@@ -7,12 +7,12 @@
     >
       <v-card-title class="info-title"
       >
-        Personal Information
+        Credit Card Information
 
       </v-card-title>
       <v-form
-        ref="personalForm"
-        @submit.prevent="confirmPersonalInfo"
+        ref="billinglForm"
+        @submit.prevent="confirmBillingInfo"
         v-model="valid"
         style="padding: 1em;"
       >
@@ -33,13 +33,69 @@
           <v-col>
             <v-text-field
               v-model="lastName"
-              :rules="[requiredRule, minNameLengthRule, maxNameLengthRule]"              :counter="10"
+              :rules="[requiredRule, minNameLengthRule, maxNameLengthRule]"
+              :counter="10"
               label="Last name"
               required
-
             ></v-text-field>
           </v-col>
 
+        </v-row>
+
+        <v-row>
+          <v-col cols="1" align-self="center">
+            <v-icon class="icon-color">mdi-credit-card</v-icon>
+          </v-col>
+          <v-col>
+            <v-text-field
+              v-model="card"
+              :counter="20"
+              label="Card Number"
+              required
+              :rules="[requiredRule, cardRules]"
+
+            ></v-text-field>
+          </v-col>
+          <v-col cols="3">
+            <v-text-field
+              v-model="cvv"
+              label="CVV"
+              required
+              :rules="[requiredRule, cvvRules]"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+
+        <v-row>
+          <v-col cols="1" align-self="center">
+            <v-icon class="icon-color">mdi-calendar-month</v-icon>
+          </v-col>
+          <v-col>
+            <v-select
+              v-model="exparationMonth"
+              :items="months"
+              label="Expiration month">
+              required
+              :rules="[requiredRule]"
+            </v-select>
+
+
+          </v-col>
+          <v-col cols="3">
+            <v-text-field
+              v-model="exparationYear"
+              type="number"
+              :counter="4"
+              label="Expiration year"
+              required
+              :rules="[requiredRule]"
+              min="2023"
+              max="2050"
+            >
+
+            </v-text-field>
+          </v-col>
         </v-row>
 
         <v-row>
@@ -50,11 +106,12 @@
             <v-text-field
               v-model="address"
               :counter="7"
-              label="Street address"
+              label="Billing address"
               required
               :rules="[requiredRule]"
             ></v-text-field>
           </v-col>
+
         </v-row>
 
         <v-row>
@@ -92,74 +149,21 @@
           </v-col>
         </v-row>
 
-        <v-row>
-          <v-col cols="1" align-self="center">
-            <v-icon class="icon-color">mdi-phone-classic</v-icon>
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="phone"
-              :counter="7"
-              label="Phone Number"
-              required
-              :rules="[requiredRule]"
-            ></v-text-field>
-          </v-col>
-        </v-row>
 
-        <v-row>
-          <v-col cols="1" align-self="center">
-            <v-icon class="icon-color">mdi-email</v-icon>
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="email"
-              label="E-mail"
-              required
-              :rules="[requiredRule, emailRules]"
-            ></v-text-field>
-          </v-col>
-        </v-row>
 
-<!--        <v-row>
 
-          <v-col cols="4" style="align-content: center;">
-            Is this guest the primary contact?
-          </v-col>
 
-          <v-col>
-            <v-radio-group
-              v-model="contactGuest"
-              inline
-              required
-              :rules="[requiredRule]"
-              hide-details
-            >
-              <v-radio
-                label="Yes"
-                value="true"
-                color="#5CA277"
-              ></v-radio>
-              <v-radio
-                label="No"
-                value="false"
-                color="#5CA277"
-              ></v-radio>
-            </v-radio-group>
-          </v-col>
-
-        </v-row>-->
         <v-row
           justify="end"
           style="padding: 1em;"
         >
-            <v-btn
-              :disabled="!isFormValid"
-              type="submit"
-              class="section-btn"
-            >
-              confirm
-            </v-btn>
+          <v-btn
+            :disabled="!isFormValid"
+            type="submit"
+            class="section-btn"
+          >
+            confirm
+          </v-btn>
 
 
         </v-row>
@@ -188,10 +192,17 @@ export default {
     requiredRule: (v) => !!v || 'Field is required.',
     minNameLengthRule: (v) => (v?.length > 1) || 'Name must have at least one characters.',
     maxNameLengthRule: (v) => (v?.length <= 10) || 'Name must be less than 10 characters.',
-    email: '',
-    emailRules: (v) => (/.+@.+\..+/.test(v)) || 'E-mail must be valid.',
-    phone: '',
+    cvv: '',
+    cvvRules:(v) => (/^\d{3}$/.test(v)) || 'CVV must be valid.',
+    card: '',
+    cardRules: (v) => (/^\d{4} \d{4} \d{4} \d{4}$/.test(v)) || 'Card number must be valid.',
     formValid: false,
+    exparationMonth: null,
+    exparationYear: null,
+    months: [
+      'January','February', 'March', 'April', 'May', 'June', 'July',
+      'August', 'September', 'October',  'November',  'December'
+    ],
   }),
   watch: {
     // Watch for changes in the form fields and validate the form
@@ -202,8 +213,8 @@ export default {
     address: 'validateForm',
     city: 'validateForm',
     state: 'validateForm',
-    phone: 'validateForm',
-    email: 'validateForm',
+    card: 'validateForm',
+    cvv: 'validateForm',
   },
   computed: {
     isFormValid(){
@@ -212,38 +223,43 @@ export default {
   },
   methods: {
     async validateForm() {
-      if (this.$refs.personalForm) {
+      if (this.$refs.billinglForm) {
         try {
-          await this.$refs.personalForm.validate();
-          const formValidation = JSON.parse(JSON.stringify(this.$refs.personalForm))
+          await this.$refs.billinglForm.validate();
+          const formValidation = JSON.parse(JSON.stringify(this.$refs.billinglForm))
           this.formValid = formValidation.isValid;
-          }
-          catch (error) {
-            console.log('error', error)
-            this.formValid = false;
+        }
+        catch (error) {
+          console.log('error', error)
+          this.formValid = false;
         }
       } else {
         this.formValid = false;
       }
     },
-    confirmPersonalInfo() {
-      const guest = {}
-      guest['firstName'] = this.firstName;
-      guest['lastName'] = this.lastName;
-      guest['address'] = this.address;
-      guest['city'] = this.city;
-      guest['state'] = this.state;
-      guest['phone'] = this.phone;
-      guest['email'] = this.email;
+    confirmBillingInfo() {
 
-      const allValuesNonEmpty = Object.values(guest).every(value => value !== '');
 
-      const personalInfo = allValuesNonEmpty ? guest : {}
+      const cardInfo = {}
+      cardInfo['firstName'] = this.firstName;
+      cardInfo['lastName'] = this.lastName;
+      cardInfo['card'] = this.card;
+      cardInfo['cvv'] = this.cvv;
+      cardInfo['expirationMonth'] = this.exparationMonth;
+      cardInfo['expirationYear'] = this.exparationYear;
+      cardInfo['address'] = this.address;
+      cardInfo['city'] = this.city;
+      cardInfo['state'] = this.state;
 
-      this.$emit('getPersonalInfo', personalInfo)
-      console.log("Personal Info submitted")
-    },
 
+      const allValuesNonEmpty = Object.values(cardInfo).every(value => value !== '');
+
+      const billingInfo = allValuesNonEmpty ? cardInfo : {}
+
+      this.$emit('getBillingInfo', billingInfo)
+      console.log("Billing Info submitted")
+
+    }
   },
 
 }

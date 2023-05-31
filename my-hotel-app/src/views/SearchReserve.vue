@@ -4,7 +4,7 @@
   <br>
   <RoomsAvailability v-if="roomAvailability" @reserveRooms="showContactInfo"> </RoomsAvailability>
   <br>
-  <PersonalInformation v-if="contactInfo" > </PersonalInformation>
+  <Guest v-if="contactInfo" > </Guest>
 
   <br><br>
   <br><br>
@@ -17,13 +17,13 @@
 <script>
   import BookingSelection from "@/components/BookingSelection.vue";
   import RoomsAvailability from "@/components/RoomsAvailability.vue";
-  import PersonalInformation from "@/components/Personalformation.vue";
+  import Guest from "@/components/Guest.vue";
 
 
   export default {
     name: 'SearchReserve',
     components: {
-      PersonalInformation,
+      Guest,
       BookingSelection,
       RoomsAvailability,
     },

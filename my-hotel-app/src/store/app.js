@@ -10,4 +10,7 @@ export const useAppStore = defineStore('app', {
       this.isLoggedIn = true
     },
   },
+  getters: {
+
+  },
 })

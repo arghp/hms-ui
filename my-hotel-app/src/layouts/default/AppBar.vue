@@ -1,8 +1,10 @@
 <template>
   <v-app-bar flat style="background-color: #1C4670">
     <v-app-bar-title style="color: #278AB0;" >
-      <v-icon style="color: #278AB0;" icon="mdi-home-modern" />
-      StayEase
+      <router-link style="text-decoration: none; color:#278AB0;" :to="{name:'Home'}">
+        <v-icon style="color: #278AB0;" icon="mdi-home-modern" />
+        StayEase
+      </router-link>
     </v-app-bar-title>
   </v-app-bar>
 </template>

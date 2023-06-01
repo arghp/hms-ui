@@ -67,6 +67,8 @@
 </template>
 
 <script>
+
+import { useAppStore } from '@/store/app'
   export default {
     setup() {
       const appStore = useAppStore()
@@ -75,6 +77,7 @@
         appStore
       }
     },
+    name:'Home',
     data: () => ({
 
     }),

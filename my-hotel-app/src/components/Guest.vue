@@ -7,11 +7,47 @@
 
     <v-row>
       <v-col cols="3" >
-        <ul style="margin: 10em 4em 4em;">
-          <li style="margin-top: 2em; color: #5CA277;"><h3>1. Personal Information</h3></li>
-          <li style="margin-top: 2em; color: #5CA277;"><h3>2. Billing Information</h3></li>
-          <li style="margin-top: 2em; color: #5CA277;"><h3>3. Review & Confirm</h3></li>
-        </ul>
+        <v-list
+          rounded
+          style="background-color: transparent; margin: 14em 4em 4em;"
+        >
+          <v-list-item-group
+            mandatory
+            color="#5CA277"
+            v-model="guestMenu"
+          >
+            <v-list-item >
+              <v-btn
+                class="guest-list-btn"
+                @click="showPersonal"
+              >
+               1. Personal Information
+
+              </v-btn>
+            </v-list-item>
+            <v-list-item >
+                <v-btn
+                  class="guest-list-btn"
+                  :disabled="!personalInfo"
+                  @click="showBilling"
+                >
+                  2. Billing Information
+              </v-btn>
+            </v-list-item>
+            <v-list-item >
+              <v-btn
+                  class="guest-list-btn"
+                  :disabled="!personalInfo || !billingInfo"
+                  @click="showReview"
+                >
+                  3. Review & Submit
+
+              </v-btn>
+            </v-list-item>
+
+          </v-list-item-group>
+
+        </v-list>
       </v-col>
       <v-col cols="6">
         <PersonalInformation
@@ -73,7 +109,22 @@ export default {
       this.showBillingCard = false;
       this.showReviewCard = true;
       console.log('showBillingCard', this.showBillingCard)
-    }
+    },
+    showPersonal(){
+      this.showBillingCard=false;
+      this.showReviewCard=false;
+      this.showPersonalCard=true;
+    },
+    showBilling(){
+      this.showPersonalCard=false;
+      this.showReviewCard=false;
+      this.showBillingCard=true;
+    },
+    showReview(){
+      this.showPersonalCard=false;
+      this.showBillingCard=false;
+      this.showReviewCard=true;
+    },
 
   }
 }
@@ -90,5 +141,12 @@ export default {
   color: #5CA277;
   margin-bottom: 1em;
   margin-top: 1em;
+}
+
+.guest-list-btn{
+  width: 100%;
+  color: #5CA277;
+  font-weight: bold;
+
 }
 </style>

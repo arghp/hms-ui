@@ -73,7 +73,7 @@
           </v-col>
           <v-col>
             <v-select
-              v-model="exparationMonth"
+              v-model="expirationMonth"
               :items="months"
               label="Expiration month">
               required
@@ -84,7 +84,7 @@
           </v-col>
           <v-col cols="3">
             <v-text-field
-              v-model="exparationYear"
+              v-model="expirationYear"
               type="number"
               :counter="4"
               label="Expiration year"
@@ -158,7 +158,7 @@
           style="padding: 1em;"
         >
           <v-btn
-            :disabled="!isFormValid"
+            :disabled="!isBillingFormValid"
             type="submit"
             class="section-btn"
           >
@@ -197,8 +197,8 @@ export default {
     card: '',
     cardRules: (v) => (/^\d{4} \d{4} \d{4} \d{4}$/.test(v)) || 'Card number must be valid.',
     formValid: false,
-    exparationMonth: null,
-    exparationYear: null,
+    expirationMonth: null,
+    expirationYear: null,
     months: [
       'January','February', 'March', 'April', 'May', 'June', 'July',
       'August', 'September', 'October',  'November',  'December'
@@ -206,23 +206,24 @@ export default {
   }),
   watch: {
     // Watch for changes in the form fields and validate the form
-    field1: 'validateForm',
-    field2: 'validateForm',
-    firstName: 'validateForm',
-    lastName: 'validateForm',
-    address: 'validateForm',
-    city: 'validateForm',
-    state: 'validateForm',
-    card: 'validateForm',
-    cvv: 'validateForm',
+    firstName: 'validateBillingForm',
+    lastName: 'validateBillingForm',
+    card: 'validateBillingForm',
+    cvv: 'validateBillingForm',
+    expirationMonth: 'validateBillingForm',
+    expirationYear: 'validateBillingForm',
+    address: 'validateBillingForm',
+    city: 'validateBillingForm',
+    state: 'validateBillingForm',
+    zipCode: 'validateBillingForm',
   },
   computed: {
-    isFormValid(){
+    isBillingFormValid(){
       return this.formValid;
     }
   },
   methods: {
-    async validateForm() {
+    async validateBillingForm() {
       if (this.$refs.billinglForm) {
         try {
           await this.$refs.billinglForm.validate();
@@ -245,8 +246,8 @@ export default {
       cardInfo['lastName'] = this.lastName;
       cardInfo['card'] = this.card;
       cardInfo['cvv'] = this.cvv;
-      cardInfo['expirationMonth'] = this.exparationMonth;
-      cardInfo['expirationYear'] = this.exparationYear;
+      cardInfo['expirationMonth'] = this.expirationMonth;
+      cardInfo['expirationYear'] = this.expirationYear;
       cardInfo['address'] = this.address;
       cardInfo['city'] = this.city;
       cardInfo['state'] = this.state;

@@ -195,13 +195,12 @@ export default {
   }),
   watch: {
     // Watch for changes in the form fields and validate the form
-    field1: 'validateForm',
-    field2: 'validateForm',
     firstName: 'validateForm',
     lastName: 'validateForm',
     address: 'validateForm',
     city: 'validateForm',
     state: 'validateForm',
+    zipCode: 'validateForm',
     phone: 'validateForm',
     email: 'validateForm',
   },

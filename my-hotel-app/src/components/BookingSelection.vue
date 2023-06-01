@@ -1,7 +1,8 @@
 <template>
 
   <v-container class="section-container">
-
+    <h1 class="section-header">Search</h1>
+    <br>
       <v-row>
         <v-col cols='2' class="d-flex align-center">Number of guests: &nbsp;</v-col>
         <v-col >

@@ -3,6 +3,10 @@
   <v-container class="section-container">
     <h1 class="section-header">Search</h1>
     <br>
+    <v-form
+        ref="searchForm"
+        v-model="search"
+      >
       <v-row>
         <v-col cols='2' class="d-flex align-center">Number of guests: &nbsp;</v-col>
         <v-col >
@@ -12,6 +16,8 @@
             density="compact"
             style="width:180px"
             variant="outlined"
+            required
+            :rules="[requiredRule]"
             min="1"
             max="15"
           ></v-text-field>
@@ -27,9 +33,9 @@
             label="Check-in date"
             type="date"
             required
+             :rules="[requiredRule]"
             :min="minStartDate"
             :max="maxStartDate"
-            @input="updateMinEndDate"
           ></v-text-field>
         </v-col>
 
@@ -40,28 +46,31 @@
             label="Check-out date"
             type="date"
             required
+             :rules="[requiredRule, checkDates]"
             :min="minEndDate"
             :max="maxEndDate"
-            @input="updateMinEndDate"
           ></v-text-field>
         </v-col>
       </v-row>
 
+      </v-form>
       <v-row>
-        Additional Options:
+        <v-col>Additional Options:</v-col>
       </v-row>
-
-      <v-row style="margin-bottom: 2em;">
-        <v-checkbox
+         <v-checkbox
           v-model="easyAccess"
           label="Easy Access"
           color="#5CA277"
           hide-details
         ></v-checkbox>
-      </v-row>
 
-      <v-row justify="end">
-      <v-btn class="section-btn" @click="searchRooms">
+      <v-row justify="end" style="margin-top: 1em;">
+      <v-btn
+        class="section-btn"
+        type="submit"
+        :disabled="!isSearchFormValid"
+        @click="searchRooms"
+      >
         Search available rooms
       </v-btn>
       </v-row>
@@ -75,6 +84,7 @@
 <script>
 export default {
   data: () => ({
+    search: '',
     date: null,
     minStartDateInitial:'',
     maxStartDateInitial:'',
@@ -84,12 +94,24 @@ export default {
     maxStartDate: '',
     minEndDate: '',
     maxEndDate: '',
-    checkInDate: '',
-    checkOutDate: '',
+    checkInDate: null,
+    checkOutDate: null,
     nGuests: null,
     nRooms: null,
     easyAccess: null,
+    requiredRule: (v) => !!v || 'Field is required.',
+    searchFormValid: false,
   }),
+  watch: {
+    nRooms: 'validateSearch',
+    checkInDate: 'validateSearch',
+    checkOutDate: 'validateSearch',
+  },
+  computed: {
+    isSearchFormValid() {
+      return this.searchFormValid;
+    },
+  },
   mounted() {
     const todaysDate = new Date();
 
@@ -111,45 +133,57 @@ export default {
   },
 
   methods: {
-    updateMinEndDate(){ // todo: even when the checkin/out date changes maxStarDate and minEndDate should be updated
-      console.log('check In Date:', this.checkInDate)
-      console.log('check Out Date:', this.checkOutDate)
-      if (this.checkInDate > this.minEndDate && this.checkOutDate === ''){
-        // this.minEndDate = this.checkInDate
-        this.minEndDate =  new Date(this.checkInDate)
-        this.minEndDate = new Date(this.minEndDate.getTime() + 1 * 24 * 60 * 60 * 1000);
-        this.minEndDate = this.minEndDate.toISOString().substring(0,10);
+    checkDates(checkOutDt){
+      if (this.checkInDate && this.checkInDate > checkOutDt){
+        return 'Check-Out Date must be after Check-In Date.'
       }
-      // if user clears the start date, we need to reset minEndDate
-      if(this.checkInDate === ''){
-        this.minEndDate = this.minEndDateInitial;
+      return true
+    },
+    async validateSearch() {
+      let myForm = this.$refs.searchForm
+      if (myForm) {
+        try {
+          await myForm.validate();
+          const formValidation = JSON.parse(JSON.stringify(myForm))
+          this.searchFormValid = formValidation.isValid;
+          }
+          catch (error) {
+            console.log('error', error)
+            this.searchFormValid = false;
+        }
+      } else {
+        this.searchFormValid = false;
       }
-/*    },
-    updateMaxStartDate(){*/
-      if (this.checkOutDate < this.maxStartDate && this.checkInDate === ''){
-        this.maxStartDate = new Date(this.checkOutDate)
-        this.maxStartDate = new Date(this.maxStartDate.getTime() - 1 * 24 * 60 * 60 * 1000);
-        this.maxStartDate = this.maxStartDate.toISOString().substring(0,10);
+    },
+
+/*    updateMinMaxDates(){
+      if(this.checkInDate !== null){
+        const newMinEndDate = new Date(this.checkInDate.getTime() + 1 * 24 * 60 * 60 * 1000);
+        this.minEndDate = newMinEndDate
       }
-      // if user clears the end date, we need to reset maxStartDate
-      if(this.checkOutDate === ''){
-        this.maxStartDate = this.maxStartDateInitial;
+      else{
+        this.minEndDate = this.minEndDateInitial
       }
 
-    },
-    dateAfterStart: (value) => {
-      if (!value) return 'End Date is required';
-      console.log(value)
-      console.log(this.checkInDate)
-      if (value <= this.checkInDate) return 'End Date must be after Start Date';
-      return true;
-    },
+
+      const todaysDate = new Date();
+
+    this.minStartDate = todaysDate.toISOString().substring(0, 10); // Format as YYYY-MM-DD
+    const maxStartDate = new Date(todaysDate.getTime() + 365 * 24 * 60 * 60 * 1000); // 365 days, 24 h 60 min 60 s
+    this.maxStartDate = maxStartDate.toISOString().substring(0,10);
+
+    const minEndDate = new Date(todaysDate.getTime() + 1 * 24 * 60 * 60 * 1000);
+    this.minEndDate = minEndDate.toISOString().substring(0,10);
+    const maxEndDate = new Date(todaysDate.getTime() + (365 + 30) * 24 * 60 * 60 * 1000); // max end date can be 30 days after max start date
+    this.maxEndDate = maxEndDate.toISOString().substring(0,10);
+
+
+    },*/
     searchRooms() {
       this.$emit('viewRooms', true);
       console.log("N guests", this.nGuests)
       console.log("start", this.checkInDate)
       console.log("end", this.checkOutDate)
-
 
     },
    /* searchRooms: async function() {

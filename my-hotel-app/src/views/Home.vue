@@ -1,6 +1,6 @@
 <template>
    <div style="height:100vh; background-color:#1C4670 ">
-    <v-container style="padding-top:26em;">
+    <v-container>
 
         <v-card
           id="nav-card"

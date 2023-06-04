@@ -32,10 +32,21 @@
 
     <br><br>
 
-    <v-row justify="end">
+    <v-row style="display: flex; justify-content: end;">
+
+      <div class="pl-6 pr-6 pb-6" v-if="showAlert">
+        <v-alert
+          dense
+          type="error"
+        >
+          {{this.errorMsg}}
+        </v-alert>
+      </div>
+
       <v-btn class="section-btn" @click="reserveRooms">
         Reserve rooms
       </v-btn>
+
     </v-row>
 
   </v-container>
@@ -43,7 +54,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   data: () => {
@@ -53,6 +64,9 @@ export default {
       checkOutDate: '',
       accessibility: false,
       itemsPerPage: 15,
+      showAlert: false,
+      invalidRooms: false,
+      errorMsg: '',
       headers: [
         { title: 'Room', key: 'name' , align: 'start', sortable: false },
         { title: 'Beds', key: 'beds', align: 'center', sortable: false },
@@ -108,24 +122,78 @@ export default {
      ...mapGetters(['getTotalGuests']),
   },
   methods: {
+    ...mapActions([
+        'setRequestedRooms',
+    ]),
 
     reserveRooms(){
+      this.invalidRooms = false
       const room = JSON.parse(JSON.stringify(this.requestedRooms))
       console.log('this.requestedRooms', room);
       console.log('getTotalGuests', this.getTotalGuests);
 
-    // todo: add logic for API call, we need to send a combination of IDs and numRooms
-      // need to check if at least one room was reserved before going to the "Guest" component
+      let totalRooms = 0
+      let totalCapacity = 0
+      for (let k in this.requestedRooms){
+        totalRooms += parseInt(this.requestedRooms[k]['numRooms'])
+        totalCapacity += parseInt(this.requestedRooms[k]['maxCapacity'])
+      }
 
+      console.log('total Rooms', totalRooms)
+      console.log('total Capacity', totalCapacity)
 
-      this.$emit('reserveRooms', true);
+      if (totalRooms === 0){
+        this.showAlert = true
+        this.invalidRooms = true
+        this.errorMsg = 'You need to select at least one room.'
+
+        setTimeout(() => {
+          this.errorMsg = null
+          this.showAlert = false
+          }, 2000);
+      }
+
+      if (this.getTotalGuests < totalRooms){
+        this.showAlert = true
+        this.invalidRooms = true
+        this.errorMsg = 'You requested more rooms than guests.'
+
+        setTimeout(() => {
+          this.errorMsg = null
+          this.showAlert = false
+          }, 2000);
+      }
+      if (this.getTotalGuests > totalCapacity){
+        this.showAlert = true
+        this.invalidRooms = true
+        this.errorMsg = 'You have more guests than total capacity for all rooms selected.'
+
+        setTimeout(() => {
+          this.errorMsg = null
+          this.showAlert = false
+          }, 2000);
+      }
+
+      if (!this.invalidRooms){
+        this.$emit('reserveRooms', true);
+      }
+
     },
 
     roomsRequested(item){
       console.log('item ', item)
       const room = JSON.parse(JSON.stringify(item))
-      this.requestedRooms[room.raw.id]=room.columns.numRooms
-
+      this.requestedRooms[room.raw.id]={
+        'id': room.raw.id,
+        'name': room.raw.name,
+        'beds': room.raw.beds,
+        'bedType': room.raw.bedType,
+        'maxCapacity': room.raw.maxCapacity,
+        'roomPrice': room.raw.roomPrice,
+        'numRooms': room.columns.numRooms,
+      }
+      this.setRequestedRooms(this.requestedRooms) // we need it later in Guest section once we have user's info
+      // then we send all info to API and backend marks specific room numbers as 'occupied' for set of days
     },
 
   }

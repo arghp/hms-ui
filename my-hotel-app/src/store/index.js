@@ -1,4 +1,22 @@
 // Utilities
-import { createPinia } from 'pinia'
+import { createStore } from 'vuex'
 
-export default createPinia()
+import { getters }  from "@/store/getters.js";
+import { mutations } from "@/store/mutations.js";
+import { actions } from "@/store/actions";
+/*
+import { actions } from "@/store/actions.js";*/
+
+const store = createStore({
+  state:{
+    isLoggedIn: false,
+    totalGuests: 0,
+
+  },
+  getters: getters,
+  mutations: mutations,
+  actions: actions,
+
+})
+
+export default store

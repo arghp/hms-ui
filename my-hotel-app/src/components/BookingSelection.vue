@@ -82,6 +82,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
+
 export default {
   data: () => ({
     search: '',
@@ -133,6 +136,9 @@ export default {
   },
 
   methods: {
+   ...mapActions([
+        'setTotalGuests',
+      ]),
     checkDates(checkOutDt){
       if (this.checkInDate && this.checkInDate > checkOutDt){
         return 'Check-Out Date must be after Check-In Date.'
@@ -184,7 +190,7 @@ export default {
       console.log("N guests", this.nGuests)
       console.log("start", this.checkInDate)
       console.log("end", this.checkOutDate)
-
+      this.setTotalGuests(this.nGuests)
     },
    /* searchRooms: async function() {
     if (this.nGuests > 0 && this.nGuests < 11){

@@ -65,7 +65,9 @@
 </template>
 
 <script>
-import { useAppStore } from '@/store/app'
+
+
+import {mapActions, mapState} from "vuex";
 
 export default {
   data: () => ({
@@ -88,14 +90,17 @@ export default {
     ],
     isLoggedIn: false,
   }),
-  computed: {
-    login() {
-      // TODO: backend call, validation, update store
-      const appStore = useAppStore();
-      appStore.login();
-      this.isLoggedIn = true;
-    },
+  computed:{
+    ...mapState(['isLoggedIn']),
   },
+  methods: {
+    ...mapActions([
+      'loginUser'
+    ]),
+    login(){
+      this.loginUser()
+    }
+  }
 }
 </script>
 

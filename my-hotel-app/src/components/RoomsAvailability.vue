@@ -1,7 +1,7 @@
 <template>
 
   <v-container class="section-container" >
-    <h1 class="section-header">Room Availability</h1>
+    <h1 class="section-header">Room Availability {{$store.state.totalGuests}}</h1>
     <br>
     <v-data-table
       v-model:items-per-page="itemsPerPage"
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data: () => {
     return {
@@ -102,10 +104,15 @@ export default {
       ],
     };
   },
+  computed:{
+     ...mapGetters(['getTotalGuests']),
+  },
   methods: {
+
     reserveRooms(){
       const room = JSON.parse(JSON.stringify(this.requestedRooms))
       console.log('this.requestedRooms', room);
+      console.log('getTotalGuests', this.getTotalGuests);
 
     // todo: add logic for API call, we need to send a combination of IDs and numRooms
       // need to check if at least one room was reserved before going to the "Guest" component

@@ -68,15 +68,9 @@
 
 <script>
 
-import { useAppStore } from '@/store/app'
-  export default {
-    setup() {
-      const appStore = useAppStore()
 
-      return {
-        appStore
-      }
-    },
+  export default {
+
     name:'Home',
     data: () => ({
 
@@ -84,14 +78,7 @@ import { useAppStore } from '@/store/app'
     methods: {
 
     },
-    computed: {
-      isLoggedIn: {
-        // getter
-        get() {
-          return this.appStore.isLoggedIn
-        },
-      }
-  }
+
 
   };
 </script>

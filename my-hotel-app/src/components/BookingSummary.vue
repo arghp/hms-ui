@@ -94,6 +94,14 @@ export default {
     },
     calculateTotalPrice(numNights){
 
+      if (!Number.isInteger(numNights)){
+        return 'Input value must be an integer'
+      }
+
+      if (numNights < 0){
+        return 'Input value must be positive'
+      }
+      
       let totalPrice = 0
       for (let k in this.rooms){
         console.log('key ID rom', k)

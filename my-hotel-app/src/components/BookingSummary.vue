@@ -66,18 +66,33 @@ export default {
   }),
   mounted() {
     this.nNights = this.numberOfNights(this.checkInDate, this.checkOutDate)
-    this.totalStayPrice = this.calculateTotalPrice()
+    this.totalStayPrice = this.calculateTotalPrice(this.nNights)
   },
   methods: {
     numberOfNights(startDate, endDate){
       console.log('calculate number of nights')
       console.log('startDate', startDate)
       console.log('endDate', endDate)
-      const timeDiff = new Date(endDate).getTime() - new Date(startDate).getTime()
 
-      return Math.floor(timeDiff/(24 * 60 * 60 * 1000))
+      if (!startDate || startDate === '' || !endDate || endDate === '' ) {
+        return 'Invalid input'
+      }
+
+      const startDt = new Date(startDate)
+      const endDt = new Date(endDate)
+
+      if (startDt > endDt) {
+        return 'Invalid date range'
+      }
+
+      if (startDt <= endDt) {
+        const timeDiff = endDt.getTime() - startDt.getTime()
+
+        return Math.floor(timeDiff / (24 * 60 * 60 * 1000))
+      }
+
     },
-    calculateTotalPrice(){
+    calculateTotalPrice(numNights){
 
       let totalPrice = 0
       for (let k in this.rooms){
@@ -96,7 +111,7 @@ export default {
       console.log(' total Nights ', this.nNights)
       console.log(' final totalPrice', totalPrice)
 
-      return totalPrice * this.nNights
+      return totalPrice * numNights
     },
   }
 }

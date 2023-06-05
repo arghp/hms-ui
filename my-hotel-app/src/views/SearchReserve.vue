@@ -2,7 +2,13 @@
 
   <BookingSelection @viewRooms="showRooms"> </BookingSelection>
   <br>
-  <RoomsAvailability v-if="roomAvailability" @reserveRooms="showContactInfo"> </RoomsAvailability>
+  <RoomsAvailability
+    v-if="roomAvailability"
+    @reserveRooms="showContactInfo"
+
+  > </RoomsAvailability>
+<!--  :rooms="rooms" -->
+
   <br>
   <Guest v-if="contactInfo" @payed="hideRooms"> </Guest>
 
@@ -31,12 +37,14 @@
       return{
         roomAvailability: false,
         contactInfo: false,
+        rooms: {},
       }
     },
     methods: {
-      showRooms(){
+      showRooms(rooms){
         this.roomAvailability = true;
         this.contactInfo = false;
+        this.rooms = rooms;
       },
       showContactInfo(){
         this.contactInfo = true

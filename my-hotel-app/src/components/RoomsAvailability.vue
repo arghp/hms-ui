@@ -57,6 +57,9 @@
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
+/*  props:[
+    'rooms'
+  ],*/
   data: () => {
     return {
       numberRooms: 0,

@@ -21,40 +21,39 @@
               v-if="!isLoggedIn"
             >
 
-           <v-row>
-            <v-col cols="1" align-self="center">
-              <v-icon class="icon-color">mdi-email</v-icon>
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                label="E-mail"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
+             <v-row>
+              <v-col cols="1" align-self="center">
+                <v-icon class="icon-color">mdi-email</v-icon>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  v-model="email"
+                  :rules="emailRules"
+                  label="E-mail"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
+            <v-row>
+              <v-col cols="1" align-self="center">
+                <v-icon class="icon-color">mdi-onepassword</v-icon>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  v-model="confirmationNumber"
+                  :rules="confirmationNumberRules"
+                  label="Confirmation Number"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
-                  <v-row>
-                  <v-col cols="1" align-self="center">
-                    <v-icon class="icon-color">mdi-onepassword</v-icon>
-                  </v-col>
-                  <v-col>
-                    <v-text-field
-                      v-model="confirmationNumber"
-                      :rules="confirmationNumberRules"
-                      label="Confirmation Number"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-
-                <v-row justify="end">
-                  <v-btn class="section-btn" @click="login">
-                    Login
-                  </v-btn>
-                </v-row>
+            <v-row justify="end">
+              <v-btn class="section-btn" @click="login">
+                Login
+              </v-btn>
+            </v-row>
 
 
             </v-form>

@@ -9,13 +9,14 @@ import { actions } from "@/store/actions.js";*/
 
 const store = createStore({
   state:{
-    api_uri: '', //todo add API URI
+    api_uri: 'http://127.0.0.1:5000', //todo add API URI
     guestCheckInDate: null,
     guestCheckOutDate: null,
     choosenRooms: {},
     isLoggedIn: false,
     token: '',
     totalGuests: 0,
+
 
   },
   getters: getters,

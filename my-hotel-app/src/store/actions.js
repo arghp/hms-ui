@@ -19,19 +19,16 @@ export const actions = {
   loginUser({commit}, payload) {
       commit("LOGIN_USER", payload)
   },
-/*
-  sendRequestedRooms({state, dispatch}, payload){
+  getAvailableRooms({state, dispatch}, payload){
     return  new Promise((resolve, reject) => {
-      const api_uri = state.api_uri + "/account/profile/";
+      const api_uri = state.api_uri + "/rooms";
       axios({
-        method: "post",
+        method: "get",
         url: api_uri,
         params: {
-          organization: payload.org_uid,
-          profile: payload.gap_uid,
-        },
-        headers: {
-          "X-ACCESS-TOKEN": state.token,
+          n_guests: payload.nGuests,
+          check_in_date: payload.checkInDate,
+          check_out_date: payload.checkOutDate,
         },
       })
         .then((response) => {
@@ -43,5 +40,5 @@ export const actions = {
           reject(error);
         });
     });
-  }*/
+  }
 }

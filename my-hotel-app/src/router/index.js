@@ -21,15 +21,10 @@ const routes = [
         component: () => import('@/views/SearchReserve.vue'),
       },
       {
-        path: "registration",
-        name: "Registration",
-        component: () => import('@/views/Registration.vue'),
-      },
-      {
         path: "login",
         name: "Login",
         component: () => import('@/views/Login.vue'),
-      },
+      }
     ],
   },
 

@@ -164,29 +164,6 @@ export default {
       }
     },
 
-/*    updateMinMaxDates(){
-      if(this.checkInDate !== null){
-        const newMinEndDate = new Date(this.checkInDate.getTime() + 1 * 24 * 60 * 60 * 1000);
-        this.minEndDate = newMinEndDate
-      }
-      else{
-        this.minEndDate = this.minEndDateInitial
-      }
-
-
-      const todaysDate = new Date();
-
-    this.minStartDate = todaysDate.toISOString().substring(0, 10); // Format as YYYY-MM-DD
-    const maxStartDate = new Date(todaysDate.getTime() + 365 * 24 * 60 * 60 * 1000); // 365 days, 24 h 60 min 60 s
-    this.maxStartDate = maxStartDate.toISOString().substring(0,10);
-
-    const minEndDate = new Date(todaysDate.getTime() + 1 * 24 * 60 * 60 * 1000);
-    this.minEndDate = minEndDate.toISOString().substring(0,10);
-    const maxEndDate = new Date(todaysDate.getTime() + (365 + 30) * 24 * 60 * 60 * 1000); // max end date can be 30 days after max start date
-    this.maxEndDate = maxEndDate.toISOString().substring(0,10);
-
-
-    },*/
     searchRooms({commit}, checkInDate) {
       this.$emit('viewRooms', true);
       console.log("N guests", this.nGuests)
@@ -196,18 +173,22 @@ export default {
       this.setCheckInDate(this.checkInDate)
       this.setCheckOutDate(this.checkOutDate)
     },
-   /* searchRooms: async function() {
-    if (this.nGuests > 0 && this.nGuests < 11){
+  /* searchRooms: async function() {
+      this.setTotalGuests(this.nGuests)
+      this.setCheckInDate(this.checkInDate)
+      this.setCheckOutDate(this.checkOutDate)
+
       let payload = {
-        n_guests: this.nGuests,
-        start_date: this.checkInDate,
-        end_date: this.checkOutDate,
-        easy_access: this.easyAccess,
+        nGuests: this.nGuests,
+        checkInDate: this.checkInDate,
+        checkOutDate: this.checkOutDate,
+        easyAccess: this.easyAccess,
       }
-      await this.RoomSearch(payload)
+      await this.getAvailableRooms(payload)
         .then((data) => {
           console.log(data)
-          this.$emit('viewRooms', true);
+          const rooms = data
+          this.$emit('viewRooms', rooms);
           }
         )
         .catch((e)=>{
@@ -215,8 +196,7 @@ export default {
           console.log(e.response)
           }
         )
-        }
-    },*/
+   },*/
   },
 }
 </script>

@@ -24,7 +24,6 @@
             <v-text-field
               v-model="firstName"
               :rules="[requiredRule, minNameLengthRule, maxNameLengthRule]"
-              :counter="10"
               label="First name"
               required
             ></v-text-field>
@@ -34,7 +33,6 @@
             <v-text-field
               v-model="lastName"
               :rules="[requiredRule, minNameLengthRule, maxNameLengthRule]"
-              :counter="10"
               label="Last name"
               required
             ></v-text-field>
@@ -48,9 +46,9 @@
           </v-col>
           <v-col>
             <v-text-field
-              v-model="card"
-              :counter="20"
-              label="Card Number"
+              v-model="cardNo"
+              :counter="19"
+              label="Card Number xxxx xxxx xxxx xxxx"
               required
               :rules="[requiredRule, cardRules]"
 
@@ -59,8 +57,10 @@
           <v-col cols="3">
             <v-text-field
               v-model="cvv"
+              type="number"
               label="CVV"
               required
+              :counter="3"
               :rules="[requiredRule, cvvRules]"
             ></v-text-field>
           </v-col>
@@ -75,9 +75,10 @@
             <v-select
               v-model="expirationMonth"
               :items="months"
-              label="Expiration month">
+              label="Expiration month"
               required
               :rules="[requiredRule]"
+            >
             </v-select>
 
 
@@ -89,7 +90,7 @@
               :counter="4"
               label="Expiration year"
               required
-              :rules="[requiredRule]"
+              :rules="[requiredRule, expirationYearRule]"
               min="2023"
               max="2050"
             >
@@ -105,7 +106,6 @@
           <v-col>
             <v-text-field
               v-model="address"
-              :counter="7"
               label="Billing address"
               required
               :rules="[requiredRule]"
@@ -121,7 +121,7 @@
           <v-col>
             <v-text-field
               v-model="city"
-              :counter="5"
+              :counter="15"
               label="City"
               required
               :rules="[requiredRule]"
@@ -132,7 +132,6 @@
             <v-select
               v-model="state"
               :items="stateAbv"
-              :counter="7"
               label="State"
               required
               :rules="[requiredRule]"
@@ -141,6 +140,7 @@
           <v-col cols="3">
             <v-text-field
               v-model="zipCode"
+              type="number"
               :counter="7"
               label="Zip Code"
               required
@@ -178,10 +178,18 @@
 <script >
 
 export default {
+  props: {
+    card: Object,
+  },
   data: () => ({
     date: '2018-03-02',
     contactGuest: null,
-    stateAbv: ['CA', 'PA', 'NY'],
+    stateAbv: [
+      'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL',
+      'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT',
+      'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI',
+      'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
+    ],
     state: '',
     city: '',
     zipCode: '',
@@ -191,14 +199,15 @@ export default {
     lastName: '',
     requiredRule: (v) => !!v || 'Field is required.',
     minNameLengthRule: (v) => (v?.length > 1) || 'Name must have at least one characters.',
-    maxNameLengthRule: (v) => (v?.length <= 10) || 'Name must be less than 10 characters.',
+    maxNameLengthRule: (v) => (v?.length <= 20) || 'Name must be less than 20 characters.',
     cvv: '',
     cvvRules:(v) => (/^\d{3}$/.test(v)) || 'CVV must be valid.',
-    card: '',
+    cardNo: '',
     cardRules: (v) => (/^\d{4} \d{4} \d{4} \d{4}$/.test(v)) || 'Card number must be valid.',
     formValid: false,
     expirationMonth: null,
     expirationYear: null,
+    expirationYearRule: (v) => (v > 2023 && v <= 2050) || 'Year must be valid.',
     months: [
       'January','February', 'March', 'April', 'May', 'June', 'July',
       'August', 'September', 'October',  'November',  'December'
@@ -208,7 +217,7 @@ export default {
     // Watch for changes in the form fields and validate the form
     firstName: 'validateBillingForm',
     lastName: 'validateBillingForm',
-    card: 'validateBillingForm',
+    cardNo: 'validateBillingForm',
     cvv: 'validateBillingForm',
     expirationMonth: 'validateBillingForm',
     expirationYear: 'validateBillingForm',
@@ -216,6 +225,17 @@ export default {
     city: 'validateBillingForm',
     state: 'validateBillingForm',
     zipCode: 'validateBillingForm',
+  },
+  mounted() {
+    this.firstName = this.card.firstName
+    this.lastName = this.card.lastName
+    this.cardNo = this.card.cardNo
+    this.expirationMonth = this.card.expirationMonth
+    this.expirationYear = this.card.expirationYear
+    this.address = this.card.address
+    this.city = this.card.city
+    this.state = this.card.state
+    this.zipCode = this.card.zipCode
   },
   computed: {
     isBillingFormValid(){
@@ -244,13 +264,14 @@ export default {
       const cardInfo = {}
       cardInfo['firstName'] = this.firstName;
       cardInfo['lastName'] = this.lastName;
-      cardInfo['card'] = this.card;
+      cardInfo['cardNo'] = this.cardNo;
       cardInfo['cvv'] = this.cvv;
       cardInfo['expirationMonth'] = this.expirationMonth;
       cardInfo['expirationYear'] = this.expirationYear;
       cardInfo['address'] = this.address;
       cardInfo['city'] = this.city;
       cardInfo['state'] = this.state;
+      cardInfo['zipCode'] = this.zipCode;
 
 
       const allValuesNonEmpty = Object.values(cardInfo).every(value => value !== '');

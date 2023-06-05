@@ -24,7 +24,6 @@
             <v-text-field
               v-model="firstName"
               :rules="[requiredRule, minNameLengthRule, maxNameLengthRule]"
-              :counter="10"
               label="First name"
               required
             ></v-text-field>
@@ -49,7 +48,6 @@
           <v-col>
             <v-text-field
               v-model="address"
-              :counter="7"
               label="Street address"
               required
               :rules="[requiredRule]"
@@ -64,7 +62,7 @@
           <v-col>
             <v-text-field
               v-model="city"
-              :counter="5"
+              :counter="15"
               label="City"
               required
               :rules="[requiredRule]"
@@ -75,7 +73,6 @@
             <v-select
               v-model="state"
               :items="stateAbv"
-              :counter="7"
               label="State"
               required
               :rules="[requiredRule]"
@@ -99,10 +96,10 @@
           <v-col>
             <v-text-field
               v-model="phone"
-              :counter="7"
+              :counter="10"
               label="Phone Number"
               required
-              :rules="[requiredRule]"
+              :rules="[requiredRule, phoneRules]"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -173,11 +170,21 @@
 
 <script >
 
+import {mapActions} from "vuex";
+
 export default {
+  props: {
+    guest: Object,
+  },
   data: () => ({
     date: '2018-03-02',
     contactGuest: null,
-    stateAbv: ['CA', 'PA', 'NY'],
+    stateAbv: [
+      'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL',
+      'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT',
+      'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI',
+      'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
+    ],
     state: '',
     city: '',
     zipCode: '',
@@ -187,10 +194,11 @@ export default {
     lastName: '',
     requiredRule: (v) => !!v || 'Field is required.',
     minNameLengthRule: (v) => (v?.length > 1) || 'Name must have at least one characters.',
-    maxNameLengthRule: (v) => (v?.length <= 10) || 'Name must be less than 10 characters.',
+    maxNameLengthRule: (v) => (v?.length <= 20) || 'Name must be less than 20 characters.',
     email: '',
     emailRules: (v) => (/.+@.+\..+/.test(v)) || 'E-mail must be valid.',
     phone: '',
+    phoneRules: (v) => (/^\d{7,10}$/.test(v)) || 'Phone should have between 7 and 10 numbers.',
     formValid: false,
   }),
   watch: {
@@ -209,7 +217,20 @@ export default {
       return this.formValid;
     }
   },
+  mounted() {
+    this.firstName = this.guest.firstName
+    this.lastName = this.guest.lastName
+    this.address = this.guest.address
+    this.city = this.guest.city
+    this.state = this.guest.state
+    this.zipCode = this.guest.zipCode
+    this.phone = this.guest.phone
+    this.email = this.guest.email
+  },
   methods: {
+    ...mapActions([
+      'setEmail'
+    ]),
     async validateForm() {
       if (this.$refs.personalForm) {
         try {
@@ -232,6 +253,7 @@ export default {
       guest['address'] = this.address;
       guest['city'] = this.city;
       guest['state'] = this.state;
+      guest['zipCode'] = this.zipCode;
       guest['phone'] = this.phone;
       guest['email'] = this.email;
 
@@ -239,6 +261,7 @@ export default {
 
       const personalInfo = allValuesNonEmpty ? guest : {}
 
+      this.setEmail(this.email)
       this.$emit('getPersonalInfo', personalInfo)
       console.log("Personal Info submitted")
     },

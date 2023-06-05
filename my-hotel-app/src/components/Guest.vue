@@ -66,33 +66,14 @@
             class="info-card"
           >
             <v-card-title class="info-title"> Review </v-card-title>
-            <v-card
-              elevation="0"
-              rounded
-              style="margin: 2em;"
-            >
-              <v-card-text style="font-size: 18px;">
-                <span style="color: #5CA277"> Room: </span> {{this.room}}
-              </v-card-text>
-              <v-card-text style="font-size: 18px">
-                <span style="color: #5CA277"> Number of guests: </span> {{this.nGuests}}
-              </v-card-text>
-              <v-card-text style="font-size: 18px">
-                <span style="color: #5CA277"> Check-in Date: </span> {{this.checkInDate}}
-              </v-card-text>
-              <v-card-text style="font-size: 18px">
-                <span style="color: #5CA277"> Check-out Date: </span> {{this.checkOutDate}}
-              </v-card-text>
-              <v-card-text style="font-size: 18px">
-                <span style="color: #5CA277"> Price per night: </span> {{this.pricePerNight}}
-              </v-card-text>
-              <v-card-text v-if="guestRequests" style="font-size: 18px">
-                <span style="color: #5CA277"> Additional requests: </span> {{this.additionalOptions}}
-              </v-card-text>
-            </v-card>
-            <v-card-title style="margin: 2em; font-size: 22px; color:#5CA277; font-weight: bold;">
-              Total Price:  {{this.pricePerNight}} * 5
-            </v-card-title>
+            <BookingSummary 
+              :room="this.room"
+              :nGuests="this.nGuests"
+              :checkInDate="this.checkInDate"
+              :checkOutDate="this.checkOutDate"
+              :pricePerNight="this.pricePerNight"
+              :additionalOptions="this.additionalOptions"
+            />
             <v-card-item style="display: flex; justify-content: center;">
               <v-checkbox
                 v-model="accept"
@@ -127,15 +108,17 @@
 
 <script>
 
-  import PersonalInformation from "@/components/PersonalInformation.vue";
-  import BillingInofrmation from "@/components/BillingInofrmation.vue";
+import PersonalInformation from "@/components/PersonalInformation.vue";
+import BillingInofrmation from "@/components/BillingInofrmation.vue";
+import BookingSummary from "@/components/BookingSummary.vue";
 
 
 
 export default {
   components: {
     PersonalInformation,
-    BillingInofrmation
+    BillingInofrmation,
+    BookingSummary
   },
   data: () => ({
     date: '2018-03-02',

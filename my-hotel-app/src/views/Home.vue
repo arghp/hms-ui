@@ -13,24 +13,6 @@
           <v-list rounded style="background-color:#E3E8F0;">
               <v-list-item link>
 
-                <router-link class="routerLink" :to="{name:'Registration'}">
-                  <v-list-item-title style="color:#333; margin-left:3em;">
-                    <v-icon class="home-icon-color">mdi-account-edit</v-icon> &nbsp; Register
-                  </v-list-item-title>
-                </router-link>
-              </v-list-item>
-
-              <v-list-item link>
-
-                <router-link class="routerLink" :to="{name:'Login'}">
-                  <v-list-item-title style="color:#333; margin-left:3em;">
-                    <v-icon class="home-icon-color">mdi-account</v-icon> &nbsp; Login
-                  </v-list-item-title>
-                </router-link>
-              </v-list-item>
-
-              <v-list-item link>
-
                 <router-link class="routerLink" :to="{name:'SearchReserve'}">
                   <v-list-item-title style="color:#333; margin-left:3em;">
                     <v-icon class="home-icon-color">mdi-calendar-search</v-icon> &nbsp; Book your stay!
@@ -41,7 +23,7 @@
 
               <v-list-item link>
 
-                  <router-link class="routerLink" to="/search-reserve">
+                  <router-link class="routerLink" :to="{name:'Login'}">
                     <v-list-item-title style="color:#333; margin-left:3em;">
                       <v-icon class="home-icon-color">mdi-card-account-details-outline</v-icon> &nbsp; Guest
                     </v-list-item-title>

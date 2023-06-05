@@ -1,11 +1,20 @@
 import axios from "axios";
 
 export const actions = {
-  setTotalGuests({ commit }, nGuests) {
-      commit("SET_TOTAL_GUESTS", nGuests)
+  setCheckInDate({ commit }, checkInDate) {
+      commit("SET_CHECKIN_DATE", checkInDate)
+  },
+  setCheckOutDate({ commit }, checkOutDate) {
+      commit("SET_CHECKOUT_DATE", checkOutDate)
+  },
+  setEmail({ commit }, email) {
+      commit("SET_EMAIL", email)
   },
   setRequestedRooms({ commit }, rooms) {
       commit("SET_CHOSEN_ROOMS", rooms)
+  },
+  setTotalGuests({ commit }, nGuests) {
+      commit("SET_TOTAL_GUESTS", nGuests)
   },
   loginUser({commit}, payload) {
       commit("LOGIN_USER", payload)

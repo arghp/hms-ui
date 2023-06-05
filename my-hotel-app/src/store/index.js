@@ -10,6 +10,8 @@ import { actions } from "@/store/actions.js";*/
 const store = createStore({
   state:{
     api_uri: '', //todo add API URI
+    guestCheckInDate: null,
+    guestCheckOutDate: null,
     choosenRooms: {},
     isLoggedIn: false,
     token: '',

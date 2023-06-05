@@ -137,6 +137,8 @@ export default {
 
   methods: {
    ...mapActions([
+        'setCheckInDate',
+        'setCheckOutDate',
         'setTotalGuests',
       ]),
     checkDates(checkOutDt){
@@ -185,12 +187,14 @@ export default {
 
 
     },*/
-    searchRooms() {
+    searchRooms({commit}, checkInDate) {
       this.$emit('viewRooms', true);
       console.log("N guests", this.nGuests)
       console.log("start", this.checkInDate)
       console.log("end", this.checkOutDate)
       this.setTotalGuests(this.nGuests)
+      this.setCheckInDate(this.checkInDate)
+      this.setCheckOutDate(this.checkOutDate)
     },
    /* searchRooms: async function() {
     if (this.nGuests > 0 && this.nGuests < 11){

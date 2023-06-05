@@ -1,7 +1,7 @@
 <template>
 
   <v-container class="section-container" >
-    <h1 class="section-header">Room Availability {{$store.state.totalGuests}}</h1>
+    <h1 class="section-header">Room Availability</h1>
     <br>
     <v-data-table
       v-model:items-per-page="itemsPerPage"
@@ -128,15 +128,21 @@ export default {
 
     reserveRooms(){
       this.invalidRooms = false
-      const room = JSON.parse(JSON.stringify(this.requestedRooms))
-      console.log('this.requestedRooms', room);
+      const chosenRooms = JSON.parse(JSON.stringify(this.requestedRooms))
+      this.setRequestedRooms(chosenRooms) // we need it later in Guest section once we have user's info
+      // then we send all info to API and backend marks specific room numbers as 'occupied' for set of days
+      console.log('this.requestedRooms ', this.requestedRooms)
+
+      console.log('chosenRooms', chosenRooms);
       console.log('getTotalGuests', this.getTotalGuests);
 
       let totalRooms = 0
       let totalCapacity = 0
       for (let k in this.requestedRooms){
-        totalRooms += parseInt(this.requestedRooms[k]['numRooms'])
-        totalCapacity += parseInt(this.requestedRooms[k]['maxCapacity'])
+        let nRooms = parseInt(this.requestedRooms[k]['numRooms'])
+        totalRooms += nRooms
+        let roomCapacity = parseInt(this.requestedRooms[k]['maxCapacity'])
+        totalCapacity += roomCapacity*nRooms
       }
 
       console.log('total Rooms', totalRooms)
@@ -192,8 +198,6 @@ export default {
         'roomPrice': room.raw.roomPrice,
         'numRooms': room.columns.numRooms,
       }
-      this.setRequestedRooms(this.requestedRooms) // we need it later in Guest section once we have user's info
-      // then we send all info to API and backend marks specific room numbers as 'occupied' for set of days
     },
 
   }

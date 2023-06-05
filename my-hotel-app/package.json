@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:esm": "node_modules/.bin/mocha --require esm"
+    "test:esm": "node_modules/.bin/mocha --require esm",
+    "test": "jest"
   },
   "dependencies": {
     "@mdi/font": "7.2.96",

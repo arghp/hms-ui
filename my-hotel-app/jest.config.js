@@ -13,4 +13,9 @@ module.exports = {
 //  setupFilesAfterEnv: ['./setupTests.js'],
 
   testEnvironment: 'jest-environment-jsdom',
+  testEnvironmentOptions: {
+    customExportConditions: ["node", "node-addons"],
+  },
+  collectCoverage: true,
+  collectCoverageFrom: ["**/*.{js,vue}", "!**/node_modules/**"]
 };

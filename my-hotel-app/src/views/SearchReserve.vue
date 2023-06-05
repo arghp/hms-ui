@@ -4,7 +4,7 @@
   <br>
   <RoomsAvailability v-if="roomAvailability" @reserveRooms="showContactInfo"> </RoomsAvailability>
   <br>
-  <Guest v-if="contactInfo" > </Guest>
+  <Guest v-if="contactInfo" @payed="hideRooms"> </Guest>
 
   <br><br>
   <br><br>
@@ -36,10 +36,14 @@
     methods: {
       showRooms(){
         this.roomAvailability = true;
+        this.contactInfo = false;
       },
       showContactInfo(){
         this.contactInfo = true
-      }
+      },
+      hideRooms(){
+        this.roomAvailability = false;
+      },
 
     }
   }

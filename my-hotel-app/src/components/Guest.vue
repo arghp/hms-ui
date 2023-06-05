@@ -67,51 +67,18 @@
               rounded
               class="info-card"
             >
-              <v-card-title class="info-title"> Review </v-card-title>
-              <v-card
-                elevation="0"
-                rounded
-                style="margin: 2em;"
+            <BookingSummary
+                :rooms="rooms"
+                :nGuests="nGuests"
+                :checkInDate="checkInDate"
+                :checkOutDate="checkOutDate"
+                :additionalOptions="additionalOptions"
+                :guestRequests="guestRequests"
+            >
 
-              >
-                <v-card-text style="font-size: 18px">
-                  <span style="color: #5CA277"> Number of guests: </span> {{this.nGuests}}
-                </v-card-text>
-
-                <v-card-text style="font-size: 18px">
-                    <span style="color: #5CA277"> Check-in Date: </span> {{ this.checkInDate }}
-                  </v-card-text>
-                  <v-card-text style="font-size: 18px">
-                    <span style="color: #5CA277"> Check-out Date: </span> {{this.checkOutDate}}
-                  </v-card-text>
-                  <v-card-text style="font-size: 18px">
-                    <span style="color: #5CA277"> Total nights: </span> {{this.nNights}}
-                  </v-card-text>
-
-                <v-card-text v-if="guestRequests" style="font-size: 18px">
-                    <span style="color: #5CA277"> Additional requests: </span> {{this.additionalOptions}}
-                </v-card-text>
-
-                <v-card v-for="(room, roomId) in rooms" :key="roomId">
-                  <v-card-text style="font-size: 18px;">
-                    <span style="color: #5CA277"> Room Type: </span> {{room.name}}
-                  </v-card-text>
-
-                  <v-card-text style="font-size: 18px;">
-                    <span style="color: #5CA277"> Number of rooms: </span> {{room.numRooms}}
-                  </v-card-text>
-
-                  <v-card-text style="font-size: 18px">
-                    <span style="color: #5CA277"> Price per room per night: </span> {{room.roomPrice}}
-                  </v-card-text>
+            </BookingSummary>
 
 
-                </v-card>
-
-              </v-card>
-              <v-card-title style="margin: 2em; font-size: 22px; color:#5CA277; font-weight: bold;">
-                Total Price:  ${{this.totalStayPrice}}
-              </v-card-title>
               <v-card-item style="display: flex; justify-content: center;">
                 <v-checkbox
                   v-model="accept"
@@ -147,8 +114,9 @@
 <script>
 
 import PersonalInformation from "@/components/PersonalInformation.vue";
-import BillingInofrmation     from "@/components/BillingInofrmation.vue";
-import {mapGetters} from "vuex";
+import BillingInofrmation from "@/components/BillingInofrmation.vue";
+import BookingSummary     from "@/components/BookingSummary.vue";
+import {mapGetters}       from "vuex";
 
 
 
@@ -156,6 +124,7 @@ export default {
   components: {
     PersonalInformation,
     BillingInofrmation,
+    BookingSummary
   },
   data: () => ({
     date: '2018-03-02',
@@ -169,13 +138,13 @@ export default {
     card: {},
     guestRequests: false,
     totalPrice: '',
-    room: 'Standard Room',
+
     nGuests: '',
     checkInDate: '',
     checkOutDate: '',
-    nNights: null,
+
     pricePerNight: '',
-    totalStayPrice: null,
+
     additionalOptions: '',
     accept: false,
     payed: false,
@@ -213,9 +182,9 @@ export default {
       this.nGuests = this.getTotalGuests
       this.checkInDate = this.getCheckInDate
       this.checkOutDate = this.getCheckOutDate
-      this.nNights = this.numberOfNights(this.checkInDate, this.checkOutDate)
+
       this.rooms = JSON.parse(JSON.stringify(this.getChoosenRooms))
-      this.totalStayPrice = this.calculateTotalPrice()
+
     },
     showPersonal(){
       this.showBillingCard = false;
@@ -250,32 +219,6 @@ export default {
 
       this.showMsg = 'You successfully booked your stay with us. You will get an email confirmation shortly.'
       this.$emit('payed')
-    },
-    numberOfNights(startDate, endDate){
-      const timeDiff = new Date(endDate).getTime() - new Date(startDate).getTime()
-
-      return Math.floor(timeDiff/(24 * 60 * 60 * 1000))
-    },
-    calculateTotalPrice(){
-
-      let totalPrice = 0
-      for (let k in this.rooms){
-        console.log('key ID rom', k)
-        let nRooms = parseInt(this.rooms[k]['numRooms'])
-        console.log('one room', this.rooms[k])
-        console.log('one room numRooms', this.rooms[k]['numRooms'])
-        console.log('one room roomPrice', this.rooms[k]['roomPrice'])
-        let price = parseInt(this.rooms[k]['roomPrice'].replace(/\D/g, ''))
-
-        console.log('nRooms', nRooms)
-        console.log('price', price)
-        totalPrice += nRooms * price
-        console.log('totalPrice', totalPrice)
-      }
-      console.log(' total Nights ', this.nNights)
-      console.log(' final totalPrice', totalPrice)
-
-      return totalPrice * this.nNights
     },
   }
 }

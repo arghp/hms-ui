@@ -5,7 +5,7 @@
 Main packages for development:
 - vue v3.2.36
 - vuetify v3.0.0
-- vuex v4.1.0"
+- vuex v4.1.0
 
 Main packages for testing:
 - jest v29.5.0

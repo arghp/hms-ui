@@ -60,6 +60,7 @@ describe('PersonalInformation', () => {
   });
 
   it('emits "getPersonalInfo" event on form submission', async () => {
+    const email = 'john.doe@example.com';
     wrapper.setData({
       firstName: 'John',
       lastName: 'Doe',
@@ -68,7 +69,7 @@ describe('PersonalInformation', () => {
       state: 'CA',
       zipCode: '12345',
       phone: '1234567890',
-      email: 'john.doe@example.com',
+      email,
     });
 
     // Trigger form submission
@@ -77,7 +78,7 @@ describe('PersonalInformation', () => {
     // Check that the store action was called
     // Check if the "getPersonalInfo" event was emitted with the correct payload
     expect(actions.setEmail.mock.calls).toHaveLength(1);
-    expect(actions.setEmail.mock.calls[0][1]).toEqual('john.doe@example.com');
+    expect(actions.setEmail.mock.calls[0][1]).toEqual(email);
     expect(wrapper.emitted('getPersonalInfo')[0][0]).toEqual({
       firstName: 'John',
       lastName: 'Doe',
@@ -86,11 +87,12 @@ describe('PersonalInformation', () => {
       state: 'CA',
       zipCode: '12345',
       phone: '1234567890',
-      email: 'john.doe@example.com',
+      email,
     });
   });
 
   it('emits "getPersonalInfo" event with empty object when a field is empty', async () => {
+    const email = 'john.doe@example.com';
     wrapper.setData({
       firstName: 'John',
       lastName: '',
@@ -99,7 +101,7 @@ describe('PersonalInformation', () => {
       state: 'CA',
       zipCode: '12345',
       phone: '1234567890',
-      email: 'john.doe@example.com',
+      email,
     });
 
     // Trigger form submission
@@ -108,7 +110,7 @@ describe('PersonalInformation', () => {
     // Check that the store action was called
     // Check if the "getPersonalInfo" event was emitted with the correct payload
     expect(actions.setEmail.mock.calls).toHaveLength(2);
-    expect(actions.setEmail.mock.calls[1][1]).toEqual('john.doe@example.com');
+    expect(actions.setEmail.mock.calls[1][1]).toEqual(email);
     expect(wrapper.emitted('getPersonalInfo')[0][0]).toEqual({});
   });
 });

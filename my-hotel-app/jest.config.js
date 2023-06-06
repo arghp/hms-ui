@@ -5,7 +5,7 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
     '^.+\\.vue$': '@vue/vue3-jest',
   },
-  transformIgnorePatterns: ['/node_modules/(?!(@vue/vue3-jest|vue-router))'],
+  transformIgnorePatterns: ['/node_modules/(?!(@vue/vue3-jest|vue-router|vuex))'],
   moduleNameMapper: {
     "^vue$": "@vue/runtime-dom",
 

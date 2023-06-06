@@ -88,6 +88,27 @@ describe('PersonalInformation', () => {
       email: 'john.doe@example.com',
     });
   });
+
+  it('emits "getPersonalInfo" event with empty object when a field is empty', async () => {
+    wrapper.setData({
+      firstName: 'John',
+      lastName: '',
+      address: '123 Street',
+      city: 'Example City',
+      state: 'CA',
+      zipCode: '12345',
+      phone: '1234567890',
+      email: 'john.doe@example.com',
+    });
+
+    // Trigger form submission
+    await wrapper.vm.confirmPersonalInfo();
+
+    // Check that the store action was called
+    // Check if the "getPersonalInfo" event was emitted with the correct payload
+    expect(actions.setEmail.mock.calls).toHaveLength(2)
+    expect(wrapper.emitted('getPersonalInfo')[0][0]).toEqual({});
+  });
 });
 
 

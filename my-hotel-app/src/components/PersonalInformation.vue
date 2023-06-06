@@ -118,34 +118,6 @@
           </v-col>
         </v-row>
 
-<!--        <v-row>
-
-          <v-col cols="4" style="align-content: center;">
-            Is this guest the primary contact?
-          </v-col>
-
-          <v-col>
-            <v-radio-group
-              v-model="contactGuest"
-              inline
-              required
-              :rules="[requiredRule]"
-              hide-details
-            >
-              <v-radio
-                label="Yes"
-                value="true"
-                color="#5CA277"
-              ></v-radio>
-              <v-radio
-                label="No"
-                value="false"
-                color="#5CA277"
-              ></v-radio>
-            </v-radio-group>
-          </v-col>
-
-        </v-row>-->
         <v-row
           justify="end"
           style="padding: 1em;"

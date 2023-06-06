@@ -52,7 +52,7 @@ describe('BookingSummary', () => {
 
       const wrapper = shallowMount(BookingSummary);
 
-      expect(wrapper.vm.numberOfNights()).toBe(0);
+      expect(wrapper.vm.numberOfNights(startDate, endDate)).toBe(0);
     });
 
     it('returns invalid input msg when start date does not exit', () => {
